@@ -2,29 +2,37 @@ import java.io.*;
 import java.util.*;
 
 class Main {
-  static final String DNA_BASE_ENCODING_A = "00";
-  static final String DNA_BASE_ENCODING_C = "01";
-  static final String DNA_BASE_ENCODING_G = "10";
-  static final String DNA_BASE_ENCODING_T = "11";
-  static final String[] DNA_BASE_ENCODINGS = 
-      {DNA_BASE_ENCODING_A, DNA_BASE_ENCODING_C, DNA_BASE_ENCODING_G, DNA_BASE_ENCODING_T};
+  static final String[] DNA_BASE_ENCODINGS = {"00", "01", "10", "11"};
   static final String[] DNA_BASES = {"A", "C", "G", "T"};
 
-  public static void main(String[] args) throws Exception {
-    String input = "00000000 11100000 11000001 01111111";
+  public static void main(String[] args) {
+    // test example reading from a String
+    byte[] input = "00000000 11100000 11000001 01111111".getBytes();
     int L = 2;
-
-//    try (Reader reader = new BufferedReader(new InputStringReader(filename)) { // java 7 resource declaration syntax
-    try (Reader reader = new StringReader(input)) { // java 7 resource declaration syntax
+    try (InputStream reader = new ByteArrayInputStream(input)) { // java 7 resource declaration syntax
       System.out.println(toFASTQ(reader, L));
+    } catch (IOException io) {
+        System.out.println("Error reading from string: " + io.getMessage());
+    } // reader resource automagically closed
+
+    // test example reading from a file
+    String filename = "test.txt";
+    try (InputStream reader = new FileInputStream(filename)) {
+      System.out.println(toFASTQ(reader, 3));
+    } catch (IOException io) {
+        System.out.println("Error reading from file: " + io.getMessage());
     } // resources automagically closed
 
   }
 
   /**
-  Read 
+  Read an encoded dna sequence from an input stream, and convert it to FASTQ format. Each dna sequence
+  is assumed to be of length L.
+
+  @param reader the stream to read from
+  @param L the length of each dna fragment encoded in the stream
   */
-  static String toFASTQ(Reader reader, int L) throws IOException {
+  static String toFASTQ(InputStream reader, int L) throws IOException {
     StringBuffer output = new StringBuffer();
     int pieceIndex = 1; 
 
@@ -56,7 +64,7 @@ class Main {
   @param reader the stream to read from
   @return a String with up to the next 8 binary digits in the stream
   */
-  static String getNextByte(Reader reader) throws IOException {
+  static String getNextByte(InputStream reader) throws IOException {
       StringBuffer byteBuffer = new StringBuffer();
       int nextBit = reader.read();
 
