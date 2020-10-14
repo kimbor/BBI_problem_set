@@ -8,37 +8,36 @@ x. (Note that x itself need not appear in A for these conditions to be satisfied
 location is found, return -1. Your solution should have runtime O(log n).
 
  * @author Kim
- *
  */
 public class Problem2 {
 
 	public static void main(String[] args) {
-		int[] array1 = {1, 1, 2, 2, 3, 4, 7, 8, 8, 9};
+		int[] testArray = {1, 1, 2, 2, 3, 4, 7, 8, 8, 9, 9};
 		
 		// would prefer to use jUnit tests here, but I wasn't sure whether external libraries were allowed
-		boolean test1 = (binarySearch(array1, 4) == 5);
-		System.out.println("simple search? " + test1);
+		boolean test1 = (binarySearch(testArray, 4) == 5);
+		System.out.println("test simple search? " + test1);
 
-		boolean test2 = (binarySearch(array1, 1) == -1);
-		System.out.println("first value in array? " + test2);
+		boolean test2 = (binarySearch(testArray, 1) == -1);
+		System.out.println("test first value in array? " + test2);
 		
-		boolean test3 = (binarySearch(array1, 2) == 2);
-		System.out.println("duplicate value in array? " + test3);
+		boolean test3 = (binarySearch(testArray, 2) == 2);
+		System.out.println("test duplicate value in array? " + test3);
 		
-		boolean test7 = (binarySearch(array1, 8) == 7);
-		System.out.println("duplicate value in array? " + test7);
+		boolean test7 = (binarySearch(testArray, 8) == 7);
+		System.out.println("test duplicate value in array? " + test7);
 		
-		boolean test4 = (binarySearch(array1, 5) == 6);
-		System.out.println("binarySearch(array1, 5)=" + binarySearch(array1, 5) + " value not present in array? " + test4);
+		boolean test4 = (binarySearch(testArray, 5) == 6);
+		System.out.println("test value not present in array? " + test4);
 		
-		boolean test5 = (binarySearch(array1, -1) == -1);
-		System.out.println("value before beginning of array? " + test5);
+		boolean test5 = (binarySearch(testArray, -1) == -1);
+		System.out.println("test value before beginning of array? " + test5);
 		
-		boolean test6 = (binarySearch(array1, 10) == -1);
-		System.out.println("value greater than end of array? " + test6);	
+		boolean test6 = (binarySearch(testArray, 10) == -1);
+		System.out.println("test value greater than end of array? " + test6);	
 
-		boolean test8 = (binarySearch(array1, 9) == 9);
-		System.out.println("last value in array? " + test8);	
+		boolean test8 = (binarySearch(testArray, 9) == 9);
+		System.out.println("test last value in array? " + test8);	
 	}
 
     /**
@@ -70,12 +69,12 @@ public class Problem2 {
             else if (midVal > target)
             	// then narrow search to bottom half of array
                 high = mid - 1;
-            else {
-            	// target found
+            else {  // array[mid] matches the target
             	// need to make sure that we've found the first instance of target
-            	while (array[mid-1] == target)
-            		mid--;		// TODO: this is not log(n) complex 
-                return mid;
+            	if (array[mid-1] == target)	// if previous element also matches target
+            		high = mid - 1;	// then narrow search to bottom half of array
+            	else 
+            		return mid;
             }
         }
         return low;  // target not found, this is the insertion point
