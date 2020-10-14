@@ -86,7 +86,6 @@ public class Problem1 {
     int pieceIndex = 1; 
 
     String nextByte = getNextByte(inputStream);
-System.out.println(nextByte);    
     while (!nextByte.trim().equals("")) {
       output.append("@READ_" + pieceIndex + "\n");
       StringBuffer qualityOutput = new StringBuffer();;
