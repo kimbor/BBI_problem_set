@@ -47,6 +47,8 @@ AT
 TC
 +READ2
 "`
+
+ * @author Kim
 */
 import java.io.*;
 import java.util.*;
@@ -80,6 +82,7 @@ public class Problem1 {
 
   @param reader the stream to read from
   @param L the length of each dna fragment encoded in the stream
+  @return the encoded sequence converted to FASTQ format
   */
   static String toFASTQ(InputStream inputStream, int L) throws IOException {
     StringBuffer output = new StringBuffer();
